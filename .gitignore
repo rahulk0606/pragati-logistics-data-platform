@@ -1,0 +1,13 @@
+cat << 'EOF' > .gitignore
+# Ignore actual environment secrets
+.env
+
+# Ignore Python virtual environments and cache
+venv/
+__pycache__/
+*.py[cod]
+
+# Ignore locally generated mock CSVs and execution logs
+*.csv
+*.log
+EOF
