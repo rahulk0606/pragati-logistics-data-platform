@@ -74,53 +74,9 @@ Designed and deployed a **Hybrid On-Premises & Cloud Storage Data Platform** tha
                         │   • Power BI / Excel ODBC Direct Query  │
                         │   • Automated State Tax & Royalty Ledger│
                         └─────────────────────────────────────────┘
+
+
 ```
-
-    %% Custom Production Color Styling
-    classDef sourceStyle fill:#1E3A8A,stroke:#93C5FD,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef cloudBronze fill:#92400E,stroke:#FCD34D,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef computeStyle fill:#065F46,stroke:#6EE7B7,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef cloudSilver fill:#374151,stroke:#D1D5DB,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef warehouseGold fill:#B45309,stroke:#FDE68A,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef biStyle fill:#5B21B6,stroke:#C4B5FD,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-    classDef quarantineStyle fill:#991B1B,stroke:#FCA5A5,stroke-width:2px,color:#FFFFFF,font-weight:bold;
-
-    subgraph S1 ["1. DATA GATHERING & INGESTION"]
-        A["🏭 Multi-State Crushing Plants<br/>(UP, Haryana, Rajasthan, UK)"]:::sourceStyle
-        B["☁️ AWS S3 Bronze Landing Zone<br/>s3://pragati-raw-landing/<br/>(Immutable Raw CSV Logs)"]:::cloudBronze
-        A -->|"Daily Batch Upload (~100 MB/mo)"| B
-    end
-
-    subgraph S2 ["2. STATELESS ORCHESTRATION & ETL ENGINE"]
-        C["⚙️ Bash Orchestrator (run_pipeline.sh)<br/>• Pre-flight Checks & Audit Logging"]:::computeStyle
-        D["🐍 Python ETL Core (pipeline_etl.py)<br/>• boto3 In-Memory StringIO Stream<br/>• Zero Local Disk I/O Bottleneck"]:::computeStyle
-        E["🛡️ Data Quality Firewall<br/>• Null Key & Volume Validation<br/>• Batch Deduplication"]:::computeStyle
-        F["🚨 Quarantined / Dropped Logs<br/>(Audit Log Trace)"]:::quarantineStyle
-        G["⚡ Vectorized Transformation & O(1) Cache<br/>• CFT Volume → Metric Tonnage<br/>• Dynamic Multi-State Royalty & GST"]:::computeStyle
-
-        B -->|"boto3 get_object() Stream"| D
-        C -.->|"Triggers & Monitors"| D
-        D --> E
-        E -->|"Invalid Records"| F
-        E -->|"Clean Payload"| G
-    end
-
-    subgraph S3 ["3. STORAGE, WAREHOUSING & DISASTER RECOVERY"]
-        H["💿 AWS S3 Silver Archive Zone<br/>s3://pragati-analytics-silver/<br/>(99.999999999% DR Backup)"]:::cloudSilver
-        I[("🗄️ Local MySQL 8.0 Star Schema (Gold)<br/>• Fact: fact_transit_logs (Indexed)<br/>• Dims: Vehicles, Materials, Hubs, Tariffs<br/>• Idempotent UPSERT Engine")]:::warehouseGold
-
-        G -->|"boto3 put_object() Mirror"| H
-        G -->|"Chunked ON DUPLICATE KEY UPDATE"| I
-    end
-
-    subgraph S4 ["4. OLAP ANALYTICS & VISUALIZATION"]
-        J["📊 OLAP SQL Window Engine<br/>(tax_ledger_analytics.sql)<br/>• Running Tax Totals & DENSE_RANK()"]:::biStyle
-        K["📈 Finance & Audit Dashboards<br/>• Power BI / Excel ODBC Direct Query<br/>• Automated GST & Royalty Compliance"]:::biStyle
-
-        I -->|"Composite Index Range Scan"| J
-        J --> K
-    end
-
 
 ---
 
