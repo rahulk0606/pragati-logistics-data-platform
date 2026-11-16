@@ -76,7 +76,6 @@ Designed and deployed a **Hybrid On-Premises & Cloud Storage Data Platform** tha
                         └─────────────────────────────────────────┘
 ```
 
-flowchart TD
     %% Custom Production Color Styling
     classDef sourceStyle fill:#1E3A8A,stroke:#93C5FD,stroke-width:2px,color:#FFFFFF,font-weight:bold;
     classDef cloudBronze fill:#92400E,stroke:#FCD34D,stroke-width:2px,color:#FFFFFF,font-weight:bold;
